@@ -5,7 +5,9 @@
 ## Features
 
 - React hooks for sorting and searching arrays.
-- Includes Bubble Sort, Quick Sort, and Binary Search algorithms.
+- Includes Bubble Sort, Quick Sort, Selection Sort, Insertion Sort, Merge Sort, Heap Sort, and Binary Search algorithms.
+- Provides performance metrics (time taken) for each operation.
+- Returns both the original and sorted/searched arrays.
 - Easy to use and integrate into any React project.
 - Lightweight and efficient.
 
@@ -40,18 +42,27 @@ The import statements for hooks remain the same as shown below, as `package.json
 
 ### Bubble Sort
 
-Sort an array using the Bubble Sort algorithm.
+Sorts an array using the Bubble Sort algorithm.
 
 ```javascript
 import { useBubbleSort } from 'react-sorting-utils';
 
 const App = () => {
-  const { sortedArray, sort } = useBubbleSort([5, 3, 8, 4]);
+  // Initialize with an array, e.g., [5, 3, 8, 4, 6]
+  const { sortedArray, sort, timeTaken, originalArray } = useBubbleSort([5, 3, 8, 4, 6]);
+
+  const handleSort = () => {
+    // Optionally pass a new array to sort, otherwise it sorts the initialArray
+    // sort([1, 7, 2, 5]);
+    sort();
+  };
 
   return (
     <div>
-      <button onClick={sort}>Sort with Bubble Sort</button>
+      <button onClick={handleSort}>Sort with Bubble Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
       <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
     </div>
   );
 };
@@ -61,18 +72,112 @@ export default App;
 
 ### Quick Sort
 
-Sort an array using the Quick Sort algorithm.
+Sorts an array using the Quick Sort algorithm.
 
 ```javascript
 import { useQuickSort } from 'react-sorting-utils';
 
 const App = () => {
-  const { sortedArray, sort } = useQuickSort([9, 2, 7, 1]);
+  const { sortedArray, sort, timeTaken, originalArray } = useQuickSort([9, 2, 7, 1, 5, 0]);
 
   return (
     <div>
       <button onClick={sort}>Sort with Quick Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
       <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Selection Sort
+
+Sorts an array using the Selection Sort algorithm. Selection sort is an in-place comparison sorting algorithm that divides the input list into two parts: a sorted sublist of items which is built up from left to right at the front (left) of the list and a sublist of the remaining unsorted items that occupy the rest of the list.
+
+```javascript
+import { useSelectionSort } from 'react-sorting-utils';
+
+const App = () => {
+  const { sortedArray, sort, timeTaken, originalArray } = useSelectionSort([64, 25, 12, 22, 11]);
+
+  return (
+    <div>
+      <button onClick={sort}>Sort with Selection Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
+      <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Insertion Sort
+
+Sorts an array using the Insertion Sort algorithm. Insertion sort iterates through an input array and removes one element per iteration, finds the place the element belongs in the array, and then places it there.
+
+```javascript
+import { useInsertionSort } from 'react-sorting-utils';
+
+const App = () => {
+  const { sortedArray, sort, timeTaken, originalArray } = useInsertionSort([12, 11, 13, 5, 6]);
+
+  return (
+    <div>
+      <button onClick={sort}>Sort with Insertion Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
+      <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Merge Sort
+
+Sorts an array using the Merge Sort algorithm. Merge sort is a divide-and-conquer algorithm that divides the array into smaller subarrays, sorts them, and then merges them back together.
+
+```javascript
+import { useMergeSort } from 'react-sorting-utils';
+
+const App = () => {
+  const { sortedArray, sort, timeTaken, originalArray } = useMergeSort([38, 27, 43, 3, 9, 82, 10]);
+
+  return (
+    <div>
+      <button onClick={sort}>Sort with Merge Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
+      <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Heap Sort
+
+Sorts an array using the Heap Sort algorithm. Heap sort is a comparison-based sorting technique based on a Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end. We repeat the same process for the remaining elements.
+
+```javascript
+import { useHeapSort } from 'react-sorting-utils';
+
+const App = () => {
+  const { sortedArray, sort, timeTaken, originalArray } = useHeapSort([12, 11, 13, 5, 6, 7]);
+
+  return (
+    <div>
+      <button onClick={sort}>Sort with Heap Sort</button>
+      <p>Original Array: {originalArray.join(', ')}</p>
+      <p>Sorted Array: {sortedArray.join(', ')}</p>
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
     </div>
   );
 };
@@ -82,18 +187,29 @@ export default App;
 
 ### Binary Search
 
-Find the index of a target element in a sorted array using Binary Search.
+Finds the index of a target element in an array using Binary Search. The hook internally sorts a copy of the array before searching.
 
 ```javascript
 import { useBinarySearch } from 'react-sorting-utils';
 
 const App = () => {
-  const { index, search } = useBinarySearch([1, 3, 5, 7], 5);
+  // Example: Search for 5 in the array [1, 3, 5, 7, 9, 0, 2]
+  // Target element is 5
+  const { searchResult, search, timeTaken, originalArray } = useBinarySearch([1, 3, 5, 7, 9, 0, 2], 5);
 
   return (
     <div>
       <button onClick={search}>Search for 5</button>
-      <p>Index of 5: {index !== null ? index : 'Not Found'}</p>
+      <p>Original Array: {originalArray.join(', ')}</p>
+      {searchResult.found ? (
+        <p>Element found at index: {searchResult.index}</p>
+      ) : (
+        <p>Element not found.</p>
+      )}
+      <p>Time Taken: {timeTaken.toFixed(2)} ms</p>
+      <p style={{ fontSize: '0.8em', marginTop: '10px' }}>
+        Note: The <code>timeTaken</code> for <code>useBinarySearch</code> includes the time to internally sort the input array before searching.
+      </p>
     </div>
   );
 };
@@ -103,30 +219,30 @@ export default App;
 
 ## API Reference
 
-### `useBubbleSort(inputArray: number[])`
+All sorting hooks (`useBubbleSort`, `useQuickSort`, `useSelectionSort`, `useInsertionSort`, `useMergeSort`, `useHeapSort`) share a similar API structure.
 
-- **Parameters**:
-  - `inputArray` - An array of numbers to sort.
-- **Returns**:
-  - `sortedArray` - The sorted array.
-  - `sort` - A function to trigger the sorting operation.
+### Sorting Hooks (Common Structure)
 
-### `useQuickSort(inputArray: number[])`
+-   **Parameters**:
+    -   `initialArray: T[]` (Optional): The initial array to sort. Defaults to an empty array.
+-   **Returns**: An object with the following properties:
+    -   `sortedArray: T[]`: The array after the sort operation has been performed. Initially same as `initialArray` or empty if `sort` hasn't been called on a different array.
+    -   `sort: (arrayToSort?: T[]) => void`: A function to trigger the sorting process.
+        -   If `arrayToSort` is provided, it sorts this new array and updates `originalArray`.
+        -   If no argument is provided, it sorts the array passed as `initialArray` (or the last array passed to `sort`).
+    -   `timeTaken: number`: The time taken for the most recent sort operation in milliseconds.
+    -   `originalArray: T[]`: The array that was most recently subjected to the sorting operation (either `initialArray` or the array passed to `sort`).
 
-- **Parameters**:
-  - `inputArray` - An array of numbers to sort.
-- **Returns**:
-  - `sortedArray` - The sorted array.
-  - `sort` - A function to trigger the sorting operation.
+### `useBinarySearch<T>(initialArray: T[], target: T)`
 
-### `useBinarySearch(inputArray: number[], target: number)`
-
-- **Parameters**:
-  - `inputArray` - An array of numbers to search.
-  - `target` - The number to find in the array.
-- **Returns**:
-  - `index` - The index of the target in the sorted array, or `null` if not found.
-  - `search` - A function to trigger the search operation.
+-   **Parameters**:
+    -   `initialArray: T[]`: The array to search within.
+    -   `target: T`: The element to search for.
+-   **Returns**: An object with the following properties:
+    -   `searchResult: { found: boolean; index: number | null }`: An object indicating if the target was found and its index if so.
+    -   `search: () => void`: A function to trigger the search process.
+    -   `timeTaken: number`: The time taken for the search operation in milliseconds. This includes the time to internally sort a copy of `initialArray`.
+    -   `originalArray: T[]`: The `initialArray` passed to the hook.
 
 ## Development
 
