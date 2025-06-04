@@ -1,6 +1,6 @@
 # react-sorting-utils
 
-**react-sorting-utils** is a lightweight React library that provides utility hooks for sorting and searching arrays. It includes commonly used algorithms like Bubble Sort, Quick Sort, and Binary Search, making it easy to integrate sorting functionality into your React projects.
+**react-sorting-utils** is a lightweight React library that provides utility hooks for sorting and searching arrays. It includes commonly used algorithms like Bubble Sort, Quick Sort, and Binary Search, making it easy to integrate sorting functionality into your React projects. This package is beneficial for its lightweight nature, ease of use, and for providing common sorting and searching algorithms as React hooks.
 
 ## Features
 
@@ -22,6 +22,19 @@ Or using yarn:
 ```bash
 yarn add react-sorting-utils
 ```
+
+**Important Note on Usage:**
+
+This package distributes TypeScript source files directly. This means your project's build process will need to compile these files. If you are using TypeScript in your project, you'll need to ensure your setup can handle `.ts` files from `node_modules/react-sorting-utils/src`.
+
+Here are some general guidelines:
+- **tsconfig.json:** Ensure your project's `tsconfig.json` is configured to process files from `node_modules`. You might need to adjust `include` patterns or ensure options like `esModuleInterop: true`, `jsx: "react-jsx"` (or `"preserve"`), and `allowJs: true` (if you have mixed JS/TS in `node_modules`) are appropriately set. Some projects might need to explicitly include the path to this package's source in their `tsconfig.json`'s `include` array if their bundler doesn't pick it up automatically.
+- **Bundler Configuration (Webpack, Parcel, etc.):**
+    - If you're using a bundler like Webpack, ensure `ts-loader`, `babel-loader` (with `@babel/preset-typescript`), or a similar loader is configured to transpile `.ts` (and potentially `.tsx`) files from this package.
+    - For example, your Webpack rule for TypeScript might need to be adjusted to include files from `node_modules/react-sorting-utils`.
+- **Create React App (CRA) / Next.js / etc.:** Modern React frameworks often handle TypeScript from `node_modules` automatically or with minimal configuration. However, if you encounter issues, consult their documentation for compiling dependencies.
+
+The import statements for hooks remain the same as shown below, as `package.json`'s `main` field points to `src/index.ts`.
 
 ## Usage
 
@@ -117,17 +130,11 @@ export default App;
 
 ## Development
 
+This package is distributed as TypeScript source. If you're contributing to this package, you can use `tsc` for type checking locally. There is no build step required to publish the package as it's consumed directly as source.
+
 ### Prerequisites
 
-Ensure you have Node.js and npm installed.
-
-### Build the Project
-
-Compile the TypeScript code to JavaScript:
-
-```bash
-npm run build
-```
+Ensure you have Node.js and npm installed to manage dependencies and run local type checks.
 
 ### Run Tests
 

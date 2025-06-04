@@ -1,8 +1,19 @@
 import { useState } from 'react';
 
+/**
+ * Performs a binary search on a sorted array to find the index of a target element.
+ *
+ * @param inputArray - The array to search. It will be sorted before searching.
+ * @param target - The element to search for.
+ * @returns An object containing the index of the target element (or null if not found) and a search function.
+ */
 export const useBinarySearch = (inputArray: number[], target: number) => {
   const [index, setIndex] = useState<number | null>(null);
 
+  /**
+   * Executes the binary search.
+   * The result (index of the target or null) is stored in the `index` state variable.
+   */
   const search = () => {
     const sortedArray = [...inputArray].sort((a, b) => a - b);
     let left = 0;
