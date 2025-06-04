@@ -1,20 +1,48 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 /**
- * Sorts an array using the bubble sort algorithm.
- *
- * @param inputArray - The array to sort.
- * @returns An object containing the sorted array and a sort function.
+ * @typedef BubbleSortResult
+ * @property {number[]} sortedArray - The array after sorting.
+ * @property {() => void} sort - Function to trigger the sorting process.
+ * @property {number} timeTaken - The time taken for the sort operation in milliseconds.
+ * @property {number[]} originalArray - The original array that was sorted.
  */
-export const useBubbleSort = (inputArray: number[]) => {
+
+/**
+ * Sorts an array using the bubble sort algorithm and measures the time taken.
+ *
+ * @param initialArray - The array to sort.
+ * @returns {BubbleSortResult} An object containing the sorted array, the sort function, the time taken, and the original array.
+ */
+export const useBubbleSort = (initialArray: number[]) => {
+  const [originalArray, setOriginalArray] = useState<number[]>(initialArray);
   const [sortedArray, setSortedArray] = useState<number[]>([]);
+  const [timeTaken, setTimeTaken] = useState<number>(0);
+
+  // Update originalArray state if the initialArray prop changes
+  useEffect(() => {
+    setOriginalArray(initialArray);
+    setSortedArray([]); // Reset sorted array when input changes; or set to initialArray if preferred before sort
+    setTimeTaken(0); // Reset time taken
+  }, [initialArray]);
 
   /**
    * Executes the bubble sort.
-   * The result (sorted array) is stored in the `sortedArray` state variable.
+   * If an array is provided as a parameter, it sorts that array and updates originalArray.
+   * Otherwise, it sorts the current originalArray state.
+   * It records the time taken and updates sortedArray and timeTaken states.
    */
-  const sort = () => {
-    const arr = [...inputArray];
+  const sort = useCallback((arrayToSort?: number[]) => {
+    const currentArray = arrayToSort ? arrayToSort : originalArray;
+    if (arrayToSort) {
+      setOriginalArray(arrayToSort);
+      // Also reset sortedArray to this new originalArray or [] if a new array is provided for sorting
+      setSortedArray([]);
+    }
+
+    const startTime = performance.now();
+    const arr = [...currentArray]; // Sort a copy
+
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
         if (arr[j] > arr[j + 1]) {
@@ -22,8 +50,11 @@ export const useBubbleSort = (inputArray: number[]) => {
         }
       }
     }
-    setSortedArray(arr);
-  };
+    const endTime = performance.now();
 
-  return { sortedArray, sort };
+    setSortedArray(arr);
+    setTimeTaken(endTime - startTime);
+  }, [originalArray]);
+
+  return { sortedArray, sort, timeTaken, originalArray };
 };
